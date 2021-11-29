@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace WebApplication.DataModel
+namespace WebApplication.Models
 {
     public class Movie
     {
