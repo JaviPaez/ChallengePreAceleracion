@@ -3,9 +3,13 @@ using WebApplication.Models;
 
 namespace WebApplication
 {
-    public class DataContext : DbContext
+    public class ApplicationDbContext : DbContext
     {
-        public DataContext(DbContextOptions options) : base(options)
+        //public ApplicationDbContext()
+        //{
+        //}
+
+        public ApplicationDbContext(DbContextOptions options) : base(options)
         {
         }
 

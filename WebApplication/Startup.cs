@@ -27,8 +27,17 @@ namespace WebApplication
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<DataContext>(opts => opts.UseSqlServer(Configuration["Data:ConnectionStrings:DefaultConnection"]));
+            services.AddDbContextPool<ApplicationDbContext>(optionsAction: (services, options) =>
+            {
+                options.UseInternalServiceProvider(services);
+                options.UseSqlServer(Configuration["Data:ConnectionString:DefaultConnection"]);
+            });
 
+            services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration["Data:ConnectionString:DefaultConnection"]));
+
+            services.AddEntityFrameworkSqlServer();
+
+            //
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
