@@ -52,5 +52,22 @@ namespace WebApplication.Controllers
 
             return Ok(_context.Characters.ToList());
         }
+        
+        //Delete
+[HttpDelete]
+[Route("{id}")]
+public IActionResult Delete(int characterId)
+{
+if (_context.Characters.FirstOrDefault(x => x.CharacterId == characterId) == null) return BadRequest("The character sent doesn't exist.");
+else
+{
+var internalCharacter = _context.Characters.Find(character.CharacterId);
+
+_context.Characters.Remove(internalCharacter);
+
+_context.SaveChanges();
+}
+return Ok(_context.Characters.ToList());
+}
     }
 }
