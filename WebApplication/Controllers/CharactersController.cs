@@ -9,7 +9,6 @@ namespace WebApplication.Controllers
     [Route(template: "api/[controller]")]
     public class CharactersController : ControllerBase
     {
-
         private readonly ApplicationDbContext _context;
 
         public CharactersController(ApplicationDbContext context)
@@ -17,11 +16,41 @@ namespace WebApplication.Controllers
             _context = context;
         }
 
+        //Create
+        [HttpPost]
+        public IActionResult Post(Character character)
+        {
+            _context.Characters.Add(character);
+            _context.SaveChanges();
+            return Ok(_context.Characters.ToList());
+        }
+
+        //Read
         [HttpGet]
         public IActionResult Get()
         {
             return Ok(_context.Characters.ToList());
         }
 
+        //Update
+        [HttpPut]
+        public IActionResult Put(Character character)
+        {
+            if (_context.Characters.FirstOrDefault(x => x.CharacterId == character.CharacterId) == null) return BadRequest("The character sent doesn't exist.");
+            else
+            {
+                var internalCharacter = _context.Characters.Find(character.CharacterId);
+
+                internalCharacter.Name = character.Name;
+                internalCharacter.Image = character.Image;
+                internalCharacter.Age = character.Age;
+                internalCharacter.Weight = character.Weight;
+                internalCharacter.Story = character.Story;
+
+                _context.SaveChanges();
+            }
+
+            return Ok(_context.Characters.ToList());
+        }
     }
 }
