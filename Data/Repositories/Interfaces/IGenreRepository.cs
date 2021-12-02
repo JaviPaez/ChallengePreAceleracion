@@ -6,10 +6,10 @@ namespace Data.Repositories
     public interface IGenreRepository
     {
         IEnumerable<Genre> GetAll();
-        Genre Get(int GenreId);
+        Genre Get(int genreId);
         void Insert(Genre genre);
         void Update(Genre genre);
-        void Delete(int GenreId);
+        void Delete(int genreId);
         void Save();
     }
 }
