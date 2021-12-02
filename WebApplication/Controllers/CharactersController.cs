@@ -27,6 +27,7 @@ namespace WebApplication.Controllers
 
         //Read
         [HttpGet]
+        [Route("GetCharacters")]
         public IActionResult Get()
         {
             return Ok(_context.Characters.ToList());
