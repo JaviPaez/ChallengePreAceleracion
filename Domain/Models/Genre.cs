@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace WebApplication.Models
+namespace Domain.Models
 {
     public class Genre
     {

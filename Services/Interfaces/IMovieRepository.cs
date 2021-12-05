@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using WebApplication.Models;
+using Domain.Models;
 
-namespace Data.Repositories
+namespace Services.Repositories
 {
     public interface IMovieRepository
     {

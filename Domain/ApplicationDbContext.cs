@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using WebApplication.Models;
+using Domain.Models;
 
-namespace WebApplication
+namespace Domain
 {
     public class ApplicationDbContext : DbContext
     {

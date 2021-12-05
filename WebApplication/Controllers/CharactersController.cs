@@ -1,7 +1,7 @@
-﻿using Data.Repositories;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using System.Linq;
-using WebApplication.Models;
+using Domain.Models;
+using Domain;
 
 namespace WebApplication.Controllers
 {
@@ -53,22 +53,22 @@ namespace WebApplication.Controllers
 
             return Ok(_context.Characters.ToList());
         }
-        
+
         //Delete
-[HttpDelete]
-[Route("{id}")]
-public IActionResult Delete(int characterId)
-{
-if (_context.Characters.FirstOrDefault(x => x.CharacterId == characterId) == null) return BadRequest("The character sent doesn't exist.");
-else
-{
-var internalCharacter = _context.Characters.Find(character.CharacterId);
+        [HttpDelete]
+        [Route("{characterId}")]
+        public IActionResult Delete(int characterId)
+        {
+            if (_context.Characters.FirstOrDefault(x => x.CharacterId == characterId) == null) return BadRequest("The character sent doesn't exist.");
+            else
+            {
+                var internalCharacter = _context.Characters.Find(characterId);
 
-_context.Characters.Remove(internalCharacter);
+                _context.Characters.Remove(internalCharacter);
 
-_context.SaveChanges();
-}
-return Ok(_context.Characters.ToList());
-}
+                _context.SaveChanges();
+            }
+            return Ok(_context.Characters.ToList());
+        }
     }
 }
