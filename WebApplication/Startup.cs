@@ -1,5 +1,3 @@
-using Domain;
-using Services.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -7,6 +5,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using Services.Data;
+using Services.IConfiguration;
+using Services.IRepository;
+using Services.Repository;
 
 namespace WebApplication
 {
@@ -22,19 +24,22 @@ namespace WebApplication
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddScoped(typeof (IGenericRepository<>), typeof(GenericRepository<>));
-            services.AddScoped<ICharacterRepository, CharacterRepository>();
-            //services.AddScoped<IMovieRepository, MovieRepository>();
-            //services.AddScoped<IGenreRepository, GenreRepository>();
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
 
-            services.AddDbContextPool<ApplicationDbContext>(optionsAction: (services, options) =>
-            {
-                options.UseInternalServiceProvider(services);
-                options.UseSqlServer(Configuration["Data:ConnectionString:DefaultConnection"]);
-            });
+            //services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));            
+            //services.AddScoped<ICharactersRepository, CharactersRepository>();
+            //services.AddScoped<IMoviesRepository, MoviesRepository>();
+            //services.AddScoped<IGenresRepository, GenresRepository>();
+
+            //services.AddDbContextPool<ApplicationDbContext>(optionsAction: (services, options) =>
+            //{
+            //    options.UseInternalServiceProvider(services);
+            //    options.UseSqlServer(Configuration["Data:ConnectionString:DefaultConnection"]);
+            //});
 
             services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration["Data:ConnectionString:DefaultConnection"]));
 
+            //
             services.AddEntityFrameworkSqlServer();
 
             //

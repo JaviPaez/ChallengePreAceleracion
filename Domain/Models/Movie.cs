@@ -3,9 +3,8 @@ using System.Collections.Generic;
 
 namespace Domain.Models
 {
-    public class Movie
+    public class Movie : BaseEntity
     {
-        public int MovieId { get; set; }
         public byte[] Image { get; set; }
         public string Title { get; set; }
         public DateTime CreationDate { get; set; }

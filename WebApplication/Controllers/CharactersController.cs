@@ -1,74 +1,69 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System.Linq;
 using Domain.Models;
-using Domain;
+using Services.IConfiguration;
+using System.Threading.Tasks;
 
 namespace WebApplication.Controllers
 {
     [ApiController]
-    [Route(template: "api/[controller]")]
+    [Route("api/[controller]")]
     public class CharactersController : ControllerBase
     {
-        private readonly ApplicationDbContext _context;
+        private IUnitOfWork _unitOfWork;
 
-        public CharactersController(ApplicationDbContext context)
+        public CharactersController(IUnitOfWork unitOfWork)
         {
-            _context = context;
+            _unitOfWork = unitOfWork;
         }
 
         //Create
         [HttpPost]
-        public IActionResult Post(Character character)
+        //[Route("{character.Id}")]
+        public async Task<IActionResult> Post(Character character)
         {
-            _context.Characters.Add(character);
-            _context.SaveChanges();
-            return Ok(_context.Characters.ToList());
+            await _unitOfWork.Characters.InsertAsync(character);
+            await _unitOfWork.SaveAsync();
+
+            return CreatedAtRoute("GetCharacter", character.Id, character);
         }
 
-        //Read
+        //Read all
         [HttpGet]
         [Route("GetCharacters")]
-        public IActionResult Get()
+        public async Task<IActionResult> GetCharacters()
         {
-            return Ok(_context.Characters.ToList());
+            var characters = await _unitOfWork.Characters.GetAllAsync();
+            return Ok(characters);
+        }
+
+        //Read by Id
+        [HttpGet]
+        [Route("GetCharacter", Name = "GetCharacter")]
+        public async Task<IActionResult> GetCharacterById(int id)
+        {
+            var character = await _unitOfWork.Characters.GetByIdAsync(id);
+            return Ok(character);
         }
 
         //Update
         [HttpPut]
-        public IActionResult Put(Character character)
+        public async Task<IActionResult> Put(Character character)
         {
-            if (_context.Characters.FirstOrDefault(x => x.CharacterId == character.CharacterId) == null) return BadRequest("The character sent doesn't exist.");
-            else
-            {
-                var internalCharacter = _context.Characters.Find(character.CharacterId);
+            await _unitOfWork.Characters.UpdateAsync(character);
+            await _unitOfWork.SaveAsync();
 
-                internalCharacter.Name = character.Name;
-                internalCharacter.Image = character.Image;
-                internalCharacter.Age = character.Age;
-                internalCharacter.Weight = character.Weight;
-                internalCharacter.Story = character.Story;
-
-                _context.SaveChanges();
-            }
-
-            return Ok(_context.Characters.ToList());
+            return Ok(character);
         }
 
         //Delete
         [HttpDelete]
-        [Route("{characterId}")]
-        public IActionResult Delete(int characterId)
+        [Route("DeleteCharacter")]
+        public async Task<IActionResult> Delete(int id)
         {
-            if (_context.Characters.FirstOrDefault(x => x.CharacterId == characterId) == null) return BadRequest("The character sent doesn't exist.");
-            else
-            {
-                var internalCharacter = _context.Characters.Find(characterId);
+            await _unitOfWork.Characters.DeleteAsync(id);
+            await _unitOfWork.SaveAsync();
 
-                _context.Characters.Remove(internalCharacter);
-
-                _context.SaveChanges();
-            }
-            return Ok(_context.Characters.ToList());
+            return Ok();
         }
     }
 }

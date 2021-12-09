@@ -2,9 +2,9 @@
 using System.Threading.Tasks;
 using Domain.Models;
 
-namespace Services.Repositories
+namespace Services.IRepository
 {
-    public interface ICharacterRepository : IGenericRepository<Character>
+    public interface ICharactersRepository : IGenericRepository<Character>
     {
         Task<Character> GetCharacterByName(string name);
         Task<List<Character>> GetCharacterByAge(int age);

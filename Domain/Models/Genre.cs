@@ -2,9 +2,8 @@
 
 namespace Domain.Models
 {
-    public class Genre
+    public class Genre : BaseEntity
     {
-        public int GenreId { get; set; }
         public string Name { get; set; }
         public byte[] Image { get; set; }
 

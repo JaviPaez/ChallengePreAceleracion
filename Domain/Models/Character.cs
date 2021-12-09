@@ -2,9 +2,8 @@
 
 namespace Domain.Models
 {
-    public class Character
+    public class Character : BaseEntity
     {
-        public int CharacterId { get; set; }
         public byte[] Image { get; set; }
         public string Name { get; set; }       
         public int Age { get; set; }

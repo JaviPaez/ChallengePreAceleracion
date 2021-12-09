@@ -1,13 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Domain.Models;
 
-namespace Domain
+namespace Services.Data
 {
     public class ApplicationDbContext : DbContext
     {
-        //public ApplicationDbContext()
-        //{
-        //}
+        public ApplicationDbContext()
+        {
+        }
 
         public ApplicationDbContext(DbContextOptions options) : base(options)
         {
