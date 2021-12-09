@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Services.IRepository
+namespace Services.Repositories
 {
     public interface IGenericRepository<T> where T : class
     {

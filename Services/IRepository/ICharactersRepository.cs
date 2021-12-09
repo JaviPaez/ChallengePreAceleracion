@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using Domain.Models;
 
-namespace Services.IRepository
+namespace Services.Repositories
 {
     public interface ICharactersRepository : IGenericRepository<Character>
     {
