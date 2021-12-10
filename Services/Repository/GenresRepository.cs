@@ -1,8 +1,4 @@
-using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
-using System.Linq;
 using Domain.Models;
-using System.Threading.Tasks;
 using Services.IRepository;
 using Services.Data;
 

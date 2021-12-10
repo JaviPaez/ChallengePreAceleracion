@@ -21,8 +21,8 @@ namespace Services.Data
             _context = context;
 
             Characters = new CharactersRepository(context);
-            //Movies = new MoviesRepository(context);
-            //Genres = new GenresRepository(context);
+            Movies = new MoviesRepository(context);
+            Genres = new GenresRepository(context);
         }
 
         public async Task SaveAsync()

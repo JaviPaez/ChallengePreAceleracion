@@ -11,13 +11,12 @@ namespace Services.Repository
     public class MoviesRepository : GenericRepository<Movie>, IMoviesRepository
     {
         public MoviesRepository(ApplicationDbContext context) : base(context)
-        {        
-
+        {    
         }
 
-        public async Task<Movie> GetMovieByName(string name)
+        public async Task<Movie> GetMovieByName(string title)
         {
-            return await dbSet.Where(x => x.Name == name).FirstOrDefaultAsync();
+            return await dbSet.Where(x => x.Title == name).FirstOrDefaultAsync();
         }
 
         public async Task<List<Movie>> GetMovieByGenre(string genreName)
@@ -26,8 +25,7 @@ namespace Services.Repository
 
             return await dbSet.Where(x => x.Genres == genre).ToListAsync();
         }
-//NO RECIBE NINGUN PARAMETRO! CAMBIARLO EN IMovieRepository
-//editar UnitOfWork, descomentar
+
         public async Task<List<Movie>> GetMovieOrderByDate()
         {
             var movie = _context.Movies.Where(x => x.Title == movieTitle).FirstOrDefaultAsync();
