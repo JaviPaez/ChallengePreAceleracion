@@ -11,28 +11,26 @@ namespace Services.Repository
     public class MoviesRepository : GenericRepository<Movie>, IMoviesRepository
     {
         public MoviesRepository(ApplicationDbContext context) : base(context)
-        {    
+        {
         }
 
         public async Task<Movie> GetMovieByName(string title)
         {
-            return await dbSet.Where(x => x.Title == name).FirstOrDefaultAsync();
+            return await dbSet.Where(movie => movie.Title == title).FirstOrDefaultAsync();
         }
 
         public async Task<List<Movie>> GetMovieByGenre(string genreName)
-        {
+        {      
             var genre = _context.Genres.Where(x => x.Name == genreName).FirstOrDefaultAsync();
 
-            return await dbSet.Where(x => x.Genres == genre).ToListAsync();
+            return await dbSet.Include("Genre").ToListAsync();
         }
 
         public async Task<List<Movie>> GetMovieOrderByDate()
         {
-            var movie = _context.Movies.Where(x => x.Title == movieTitle).FirstOrDefaultAsync();
+            var moviesList = dbSet.ToList();
 
-            var moviesList = dbSet.Where(x => x.Movies == movie).ToListAsync();
-	    
- 	    return await moviesList.OrderBy(movie => movie.CreationDate);
+            return await (Task<List<Movie>>)moviesList.OrderBy(movie => movie.CreationDate);
         }
     }
 }
