@@ -20,10 +20,12 @@ namespace Services.Repository
         }
 
         public async Task<List<Movie>> GetMovieByGenre(string genreName)
-        {      
-            var genre = _context.Genres.Where(x => x.Name == genreName).FirstOrDefaultAsync();
+        {
+            var genre = _context.Genres.Where(x => x.Name == genreName).FirstOrDefault();
 
-            return await dbSet.Include("Genre").ToListAsync();
+            var movie = dbSet.Include(x => x.Genre).Where(x=>x.Genre==genre).ToListAsync();
+
+            return await movie;
         }
 
         public async Task<List<Movie>> GetMovieOrderByDate()

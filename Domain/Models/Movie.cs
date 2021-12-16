@@ -9,7 +9,8 @@ namespace Domain.Models
         public string Title { get; set; }
         public DateTime CreationDate { get; set; }
         public int Score { get; set; }
-
+        
+        public Genre Genre { get; set; }
         public ICollection<Character> Characters { get; set; }
     }
 }

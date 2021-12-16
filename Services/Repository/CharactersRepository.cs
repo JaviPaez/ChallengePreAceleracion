@@ -12,12 +12,11 @@ namespace Services.Repository
     {
         public CharactersRepository(ApplicationDbContext context) : base(context)
         {        
-
         }
 
         public async Task<Character> GetCharacterByName(string name)
         {
-            return await dbSet.Where(x => x.Name == name).FirstOrDefaultAsync();
+            return await dbSet.Where(x => x.Name.Contains(name)).FirstOrDefaultAsync();
         }
 
         public async Task<List<Character>> GetCharacterByAge(int age)
@@ -27,9 +26,11 @@ namespace Services.Repository
 
         public async Task<List<Character>> GetCharacterByMovie(string movieTitle)
         {
-            var movie = _context.Movies.Where(x => x.Title == movieTitle).FirstOrDefaultAsync();
+            var movie = _context.Movies.Where(x => x.Title == movieTitle).SelectMany(c=>_context.Characters).ToListAsync();
 
-            return await dbSet.Where(x => x.Movies == movie).ToListAsync();
+            return await movie;
+
+            //return await dbSet.Where(x => x.Movies == movie).ToListAsync();
         }
     }
 }

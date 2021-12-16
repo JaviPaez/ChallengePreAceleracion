@@ -45,6 +45,33 @@ namespace WebApplication.Controllers
             return Ok(character);
         }
 
+        //Get by name
+        [HttpGet]
+        [Route("GetCharacterByName")]
+        public async Task<IActionResult> GetByName(string name)
+        {
+            var character = await _unitOfWork.Characters.GetCharacterByName(name);
+            return Ok(character);
+        }
+
+        //Get by age
+        [HttpGet]
+        [Route("GetCharactersByAge")]
+        public async Task<IActionResult> GetByAge(int age)
+        {
+            var character = await _unitOfWork.Characters.GetCharacterByAge(age);
+            return Ok(character);
+        }
+
+        //Get by movie
+        [HttpGet]
+        [Route("GetCharactersByMovie")]
+        public async Task<IActionResult> GetByMovie(string movieTitle)
+        {
+            var character = await _unitOfWork.Characters.GetCharacterByMovie(movieTitle);
+            return Ok(character);
+        }
+
         //Update
         [HttpPut]
         public async Task<IActionResult> Put(Character character)
