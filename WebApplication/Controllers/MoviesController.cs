@@ -60,7 +60,17 @@ namespace WebApplication.Controllers
         {
             var movie = await _unitOfWork.Movies.GetMovieByGenre(genreName);
             return Ok(movie);
-        }        
+        }
+
+
+        //Get all ordered
+        [HttpGet]
+        [Route("GetMoviesOrderByDate")]
+        public async Task<IActionResult> GetOrderByDate(bool Ascending)
+        {
+            var movie = await _unitOfWork.Movies.GetMovieOrderByDate(Ascending);
+            return Ok(movie);
+        }
 
         //Update
         [HttpPut]

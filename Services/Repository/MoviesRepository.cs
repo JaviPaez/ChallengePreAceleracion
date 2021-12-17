@@ -23,16 +23,17 @@ namespace Services.Repository
         {
             var genre = _context.Genres.Where(x => x.Name == genreName).FirstOrDefault();
 
-            var movie = dbSet.Include(x => x.Genre).Where(x=>x.Genre==genre).ToListAsync();
+            var movie = dbSet.Include(x => x.Genre).Where(x => x.Genre == genre).ToListAsync();
 
             return await movie;
         }
 
-        public async Task<List<Movie>> GetMovieOrderByDate()
+        public async Task<List<Movie>> GetMovieOrderByDate(bool Ascending)
         {
-            var moviesList = dbSet.ToList();
+            if (Ascending == true)
+                return await dbSet.OrderBy(movie => movie.CreationDate).ToListAsync();
 
-            return await (Task<List<Movie>>)moviesList.OrderBy(movie => movie.CreationDate);
+            else return await dbSet.OrderByDescending(movie => movie.CreationDate).ToListAsync();
         }
     }
 }
