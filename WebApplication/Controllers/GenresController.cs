@@ -23,7 +23,7 @@ namespace WebApplication.Controllers
             await _unitOfWork.Genres.InsertAsync(genre);
             await _unitOfWork.SaveAsync();
 
-            return CreatedAtRoute("GetCharacter", genre.Id, genre);
+            return CreatedAtRoute("GetGenre", genre.Id, genre);
         }
 
         //Read all

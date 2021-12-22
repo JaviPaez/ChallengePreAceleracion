@@ -18,7 +18,6 @@ namespace WebApplication.Controllers
 
         //Create
         [HttpPost]
-        //[Route("{character.Id}")]
         public async Task<IActionResult> Post(Character character)
         {
             await _unitOfWork.Characters.InsertAsync(character);

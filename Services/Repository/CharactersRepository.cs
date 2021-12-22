@@ -26,11 +26,9 @@ namespace Services.Repository
 
         public async Task<List<Character>> GetCharacterByMovie(string movieTitle)
         {
-            var movie = _context.Movies.Where(x => x.Title == movieTitle).SelectMany(c=>_context.Characters).ToListAsync();
+            var character = dbSet.Include(x=> x.Movies.Where(x => x.Title == movieTitle)).ToListAsync();
 
-            return await movie;
-
-            //return await dbSet.Where(x => x.Movies == movie).ToListAsync();
+            return await character;
         }
     }
 }
