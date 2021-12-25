@@ -16,19 +16,21 @@ namespace Services.Repository
 
         public async Task<Character> GetCharacterByName(string name)
         {
-            return await dbSet.Where(x => x.Name.Contains(name)).FirstOrDefaultAsync();
+            return await dbSet.Include(x => x.Movies).ThenInclude(x => x.Genre).Where(x => x.Name.Contains(name)).FirstOrDefaultAsync();
         }
 
         public async Task<List<Character>> GetCharacterByAge(int age)
         {
-            return await dbSet.Where(x => x.Age == age).ToListAsync();
+            return await dbSet.Include(x => x.Movies).ThenInclude(x => x.Genre).Where(x => x.Age == age).ToListAsync();
         }
 
         public async Task<List<Character>> GetCharacterByMovie(string movieTitle)
         {
-            var character = dbSet.Include(x=> x.Movies.Where(x => x.Title == movieTitle)).ToListAsync();
+            var movie = _context.Movies.Where(x => x.Title.Contains(movieTitle)).FirstOrDefault();
+            
+            var characters = await dbSet.Where(x => x.Movies.Contains(movie)).ToListAsync();
 
-            return await character;
+            return characters;
         }
     }
 }

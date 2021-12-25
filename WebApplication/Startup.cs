@@ -7,8 +7,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using Services.Data;
 using Services.IConfiguration;
-using Services.IRepository;
-using Services.Repository;
+using System.Text.Json.Serialization;
 
 namespace WebApplication
 {
@@ -26,24 +25,16 @@ namespace WebApplication
         {
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
-            //services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));            
-            //services.AddScoped<ICharactersRepository, CharactersRepository>();
-            //services.AddScoped<IMoviesRepository, MoviesRepository>();
-            //services.AddScoped<IGenresRepository, GenresRepository>();
-
-            //services.AddDbContextPool<ApplicationDbContext>(optionsAction: (services, options) =>
-            //{
-            //    options.UseInternalServiceProvider(services);
-            //    options.UseSqlServer(Configuration["Data:ConnectionString:DefaultConnection"]);
-            //});
-
             services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration["Data:ConnectionString:DefaultConnection"]));
+
+            services.AddControllers().AddJsonOptions(x => x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve);
 
             //
             services.AddEntityFrameworkSqlServer();
 
             //
             services.AddControllers();
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "WebApplication", Version = "v1" });
