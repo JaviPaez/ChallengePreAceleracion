@@ -14,9 +14,9 @@ namespace Services.Repository
         {
         }
 
-        public async Task<Movie> GetMovieByName(string title)
+        public async Task<Movie> GetMovieByName(string movieTitle)
         {
-            return await dbSet.Where(movie => movie.Title == title).Include(x => x.Genre).Include(x => x.Characters).FirstOrDefaultAsync();
+            return await dbSet.Where(movie => movie.Title.Contains(movieTitle)).Include(x => x.Genre).Include(x => x.Characters).FirstOrDefaultAsync();
         }
 
         public async Task<List<Movie>> GetMovieByGenre(string genreName)
