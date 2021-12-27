@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace Entities.Models
+namespace Entities.DTO.Incoming
 {
-    public class User : BaseEntity
+    public class UserDTO : BaseEntityDTO
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }

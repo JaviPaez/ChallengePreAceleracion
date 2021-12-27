@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using Domain.Models;
+using Entities.Models;
 
 namespace Services.IRepository
 {

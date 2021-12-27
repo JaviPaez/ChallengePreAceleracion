@@ -1,11 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using Entities.Models;
+using System.Collections.Generic;
 
-namespace Entities.Models
+namespace Entities.DTO.Incoming
 {
-    public class Character : BaseEntity
+    public class CharacterDTO : BaseEntityDTO
     {
         public byte[] Image { get; set; }
-        public string Name { get; set; }       
+        public string Name { get; set; }
         public int Age { get; set; }
         public decimal Weight { get; set; }
         public string Story { get; set; }

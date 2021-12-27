@@ -1,4 +1,4 @@
-using Domain.Models;
+using Entities.Models;
 using Services.IRepository;
 using Services.Data;
 

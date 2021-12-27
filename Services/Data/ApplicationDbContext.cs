@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Domain.Models;
+using Entities.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace Services.Data

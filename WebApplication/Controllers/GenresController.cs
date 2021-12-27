@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Domain.Models;
+using Entities.Models;
 using Services.IConfiguration;
 using System.Threading.Tasks;
 

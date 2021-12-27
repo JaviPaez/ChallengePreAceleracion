@@ -1,6 +1,6 @@
-﻿namespace Entities.Models
+﻿namespace Entities.DTO.Incoming
 {
-    public class Genre : BaseEntity
+    public class GenreDTO : BaseEntityDTO
     {
         public string Name { get; set; }
         public byte[] Image { get; set; }

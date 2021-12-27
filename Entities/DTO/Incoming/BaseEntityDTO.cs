@@ -1,11 +1,10 @@
 ﻿using System;
 
-namespace Entities.Models
+namespace Entities.DTO.Incoming
 {
-    public class BaseEntity
+    public class BaseEntityDTO
     {
         public int Id { get; set; }
-        //public int Status { get; set; } = 1;
         public DateTime AddedDate { get; set; } = DateTime.UtcNow;
         public DateTime UpdateDate { get; set; }
     }

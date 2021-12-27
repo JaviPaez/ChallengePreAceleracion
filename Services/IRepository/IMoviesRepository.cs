@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Domain.Models;
+using Entities.Models;
 
 namespace Services.IRepository
 {

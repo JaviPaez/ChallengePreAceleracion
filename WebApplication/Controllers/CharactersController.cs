@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Domain.Models;
+using Entities.Models;
 using Services.IConfiguration;
 using System.Threading.Tasks;
+using Entities.DTO.Incoming;
+using System;
 
 namespace WebApplication.Controllers
 {
@@ -18,12 +20,26 @@ namespace WebApplication.Controllers
 
         //Create
         [HttpPost]
-        public async Task<IActionResult> Post(Character character)
+        public async Task<IActionResult> Post(CharacterDTO characterDTO)
         {
+            var character = new Character
+            {
+                Image = characterDTO.Image,
+                Name = characterDTO.Name,
+                Age = characterDTO.Age,
+                Weight = characterDTO.Weight,
+                Story = characterDTO.Story,
+                Movies = characterDTO.Movies,
+                UpdateDate = DateTime.UtcNow
+            };
+
             await _unitOfWork.Characters.InsertAsync(character);
             await _unitOfWork.SaveAsync();
 
-            return CreatedAtRoute("GetCharacter", character.Id, character);
+            return CreatedAtAction(
+                nameof(GetCharacterById),
+                new { id = character.Id },
+                CharacterToDTO(character));
         }
 
         //Read all
@@ -91,5 +107,16 @@ namespace WebApplication.Controllers
 
             return Ok();
         }
+
+        private static CharacterDTO CharacterToDTO(Character character) => new()
+        {
+            Id = character.Id,            
+            Image = character.Image,
+            Name = character.Name,
+            Age = character.Age,
+            Weight = character.Weight,
+            Story = character.Story,
+            Movies = character.Movies,
+        };
     }
 }
