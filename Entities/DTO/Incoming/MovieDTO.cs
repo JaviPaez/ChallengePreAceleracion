@@ -4,8 +4,9 @@ using System.Collections.Generic;
 
 namespace Entities.DTO.Incoming
 {
-    public class MovieDTO : BaseEntityDTO
+    public class MovieDTO
     {
+        public int Id { get; set; }
         public byte[] Image { get; set; }
         public string Title { get; set; }
         public DateTime CreationDate { get; set; }

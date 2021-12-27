@@ -3,8 +3,9 @@ using System.Collections.Generic;
 
 namespace Entities.DTO.Incoming
 {
-    public class CharacterDTO : BaseEntityDTO
+    public class CharacterDTO
     {
+        public int Id { get; set; }
         public byte[] Image { get; set; }
         public string Name { get; set; }
         public int Age { get; set; }

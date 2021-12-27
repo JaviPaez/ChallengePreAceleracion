@@ -42,7 +42,7 @@ namespace WebApplication.Controllers
                 CharacterToDTO(character));
         }
 
-        //Read all
+        //Get all
         [HttpGet]
         [Route("GetCharacters")]
         public async Task<IActionResult> GetCharacters()
@@ -51,13 +51,18 @@ namespace WebApplication.Controllers
             return Ok(characters);
         }
 
-        //Read by Id
+        //Get by Id
         [HttpGet]
         [Route("GetCharacter", Name = "GetCharacter")]
         public async Task<IActionResult> GetCharacterById(int id)
         {
             var character = await _unitOfWork.Characters.GetByIdAsync(id);
-            return Ok(character);
+
+            if (character == null)
+            {
+                return NotFound();
+            }
+            return Ok(CharacterToDTO(character));
         }
 
         //Get by name
