@@ -44,8 +44,9 @@ namespace Services.Repository
         {
             var entity = await dbSet.FindAsync(id);
 
+            if (entity == null) return false;
+            
             dbSet.Remove(entity);
-
             return true;
         }
 

@@ -4,6 +4,7 @@ using Services.IConfiguration;
 using System.Threading.Tasks;
 using Entities.DTO.Incoming;
 using System;
+using System.Linq;
 
 namespace WebApplication.Controllers
 {
@@ -44,16 +45,20 @@ namespace WebApplication.Controllers
 
         //Get all
         [HttpGet]
-        [Route("GetCharacters")]
         public async Task<IActionResult> GetCharacters()
         {
             var characters = await _unitOfWork.Characters.GetAllAsync();
-            return Ok(characters);
+
+            var charactersDTO = characters
+                .Select(character => CharacterToDTO(character))
+                .ToList();
+
+            return Ok(charactersDTO);
         }
 
         //Get by Id
         [HttpGet]
-        [Route("GetCharacter", Name = "GetCharacter")]
+        [Route("{id}")]
         public async Task<IActionResult> GetCharacterById(int id)
         {
             var character = await _unitOfWork.Characters.GetByIdAsync(id);
@@ -67,28 +72,34 @@ namespace WebApplication.Controllers
 
         //Get by name
         [HttpGet]
-        [Route("GetCharacterByName")]
+        [Route("name/{name}")]
         public async Task<IActionResult> GetByName(string name)
         {
             var character = await _unitOfWork.Characters.GetCharacterByName(name);
-            return Ok(character);
+
+            if (character == null)
+            {
+                return NotFound();
+            }
+            return Ok(CharacterToDTO(character));
         }
 
         //Get by age
         [HttpGet]
-        [Route("GetCharactersByAge")]
+        [Route("age/{age}")]
         public async Task<IActionResult> GetByAge(int age)
         {
             var character = await _unitOfWork.Characters.GetCharacterByAge(age);
+
             return Ok(character);
         }
 
         //Get by movie
         [HttpGet]
-        [Route("GetCharactersByMovie")]
-        public async Task<IActionResult> GetByMovie(string movieTitle)
+        [Route("movie/{movie}")]
+        public async Task<IActionResult> GetByMovie(string movie)
         {
-            var character = await _unitOfWork.Characters.GetCharacterByMovie(movieTitle);
+            var character = await _unitOfWork.Characters.GetCharacterByMovie(movie);
             return Ok(character);
         }
 
@@ -104,18 +115,23 @@ namespace WebApplication.Controllers
 
         //Delete
         [HttpDelete]
-        [Route("DeleteCharacter")]
+        [Route("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            await _unitOfWork.Characters.DeleteAsync(id);
-            await _unitOfWork.SaveAsync();
+            bool removes = await _unitOfWork.Characters.DeleteAsync(id);
 
-            return Ok();
+            if (removes)
+            {
+                await _unitOfWork.SaveAsync();
+                return NoContent();
+            }
+
+            return NotFound();
         }
 
         private static CharacterDTO CharacterToDTO(Character character) => new()
         {
-            Id = character.Id,            
+            Id = character.Id,
             Image = character.Image,
             Name = character.Name,
             Age = character.Age,
