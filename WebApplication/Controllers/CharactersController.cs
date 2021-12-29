@@ -89,9 +89,17 @@ namespace WebApplication.Controllers
         [Route("age/{age}")]
         public async Task<IActionResult> GetByAge(int age)
         {
-            var character = await _unitOfWork.Characters.GetCharacterByAge(age);
+            var characters = await _unitOfWork.Characters.GetCharactersByAge(age);
 
-            return Ok(character);
+            var charactersDTO = characters
+                .Select(character => CharacterToDTO(character))
+                .ToList();
+
+            if (charactersDTO.Count < 1)
+            {
+                return NotFound();
+            }
+            return Ok(charactersDTO);
         }
 
         //Get by movie
@@ -99,8 +107,17 @@ namespace WebApplication.Controllers
         [Route("movie/{movie}")]
         public async Task<IActionResult> GetByMovie(string movie)
         {
-            var character = await _unitOfWork.Characters.GetCharacterByMovie(movie);
-            return Ok(character);
+            var characters = await _unitOfWork.Characters.GetCharacterByMovie(movie);
+
+            var charactersDTO = characters
+                .Select(character => CharacterToDTO(character))
+                .ToList();
+
+            if (charactersDTO.Count < 1)
+            {
+                return NotFound();
+            }
+            return Ok(charactersDTO);
         }
 
         //Update
@@ -110,7 +127,7 @@ namespace WebApplication.Controllers
             await _unitOfWork.Characters.UpdateAsync(character);
             await _unitOfWork.SaveAsync();
 
-            return Ok(character);
+            return Ok(CharacterToDTO(character));
         }
 
         //Delete
@@ -120,13 +137,12 @@ namespace WebApplication.Controllers
         {
             bool removes = await _unitOfWork.Characters.DeleteAsync(id);
 
-            if (removes)
+            if (!removes)
             {
-                await _unitOfWork.SaveAsync();
-                return NoContent();
+                return NotFound();
             }
-
-            return NotFound();
+            await _unitOfWork.SaveAsync();
+            return NoContent();
         }
 
         private static CharacterDTO CharacterToDTO(Character character) => new()

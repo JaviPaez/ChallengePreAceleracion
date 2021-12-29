@@ -19,7 +19,7 @@ namespace Services.Repository
             return await dbSet.Include(x => x.Movies).ThenInclude(x => x.Genre).Where(x => x.Name.Contains(name)).FirstOrDefaultAsync();
         }
 
-        public async Task<List<Character>> GetCharacterByAge(int age)
+        public async Task<List<Character>> GetCharactersByAge(int age)
         {
             return await dbSet.Include(x => x.Movies).ThenInclude(x => x.Genre).Where(x => x.Age == age).ToListAsync();
         }
