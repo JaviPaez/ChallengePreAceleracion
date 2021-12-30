@@ -7,13 +7,10 @@ namespace WebApplication.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class GenresController : ControllerBase
+    public class GenresController : BaseController
     {
-        private IUnitOfWork _unitOfWork;
-
-        public GenresController(IUnitOfWork unitOfWork)
+        public GenresController(IUnitOfWork unitOfWork) : base(unitOfWork)
         {
-            _unitOfWork = unitOfWork;
         }
 
         //Create

@@ -7,13 +7,10 @@ namespace WebApplication.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class MoviesController : ControllerBase
+    public class MoviesController : BaseController
     {
-        private IUnitOfWork _unitOfWork;
-
-        public MoviesController(IUnitOfWork unitOfWork)
+        public MoviesController(IUnitOfWork unitOfWork) : base(unitOfWork)
         {
-            _unitOfWork = unitOfWork;
         }
 
         //Create

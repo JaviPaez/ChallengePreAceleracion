@@ -10,13 +10,10 @@ namespace WebApplication.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class CharactersController : ControllerBase
+    public class CharactersController : BaseController
     {
-        private IUnitOfWork _unitOfWork;
-
-        public CharactersController(IUnitOfWork unitOfWork)
+        public CharactersController(IUnitOfWork unitOfWork) : base(unitOfWork)
         {
-            _unitOfWork = unitOfWork;
         }
 
         //Create
