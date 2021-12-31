@@ -8,8 +8,6 @@ using System.Linq;
 
 namespace WebApplication.Controllers
 {
-    [ApiController]
-    [Route("api/[controller]")]
     public class CharactersController : BaseController
     {
         public CharactersController(IUnitOfWork unitOfWork) : base(unitOfWork)

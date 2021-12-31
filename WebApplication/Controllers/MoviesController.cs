@@ -5,8 +5,6 @@ using System.Threading.Tasks;
 
 namespace WebApplication.Controllers
 {
-    [ApiController]
-    [Route("api/[controller]")]
     public class MoviesController : BaseController
     {
         public MoviesController(IUnitOfWork unitOfWork) : base(unitOfWork)
