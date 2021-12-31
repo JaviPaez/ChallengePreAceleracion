@@ -8,6 +8,7 @@ namespace Services.IConfiguration
         ICharactersRepository Characters { get; }
         IMoviesRepository Movies { get; }
         IGenresRepository Genres { get; }
+        IUsersRepository Users { get; }
 
         Task SaveAsync();
     }

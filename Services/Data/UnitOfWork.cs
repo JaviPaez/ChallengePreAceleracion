@@ -16,6 +16,8 @@ namespace Services.Data
 
         public IGenresRepository Genres { get; private set; }
 
+        public IUsersRepository Users { get; private set; }
+
         public UnitOfWork(ApplicationDbContext context)
         {
             _context = context;
@@ -23,6 +25,7 @@ namespace Services.Data
             Characters = new CharactersRepository(context);
             Movies = new MoviesRepository(context);
             Genres = new GenresRepository(context);
+            Users = new UsersRepository(context);
         }
 
         public async Task SaveAsync()

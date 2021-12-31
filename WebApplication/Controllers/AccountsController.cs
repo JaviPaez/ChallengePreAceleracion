@@ -13,6 +13,7 @@ using System.Text;
 using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
 using System;
+using Entities.Models;
 
 namespace WebApplication.Controllers
 {
@@ -61,7 +62,7 @@ namespace WebApplication.Controllers
                     EmailConfirmed = true // todo build email functionality to send to the user to confirm email
                 };
 
-                // adding the user to the db
+                // adding the user to the table
                 var isCreated = await _userManager.CreateAsync(newUser, registrationDTO.Password);
                 if (!isCreated.Succeeded) // registration failed
                 {
@@ -71,6 +72,21 @@ namespace WebApplication.Controllers
                         Errors = isCreated.Errors.Select(x => x.Description).ToList()
                     });
                 }
+
+                // adding user to the db
+                var _user = new User();
+                _user.IdentityId = new Guid(newUser.Id);
+                _user.AddedDate = DateTime.UtcNow;
+                _user.LastName = registrationDTO.LastName;
+                _user.FirstName = registrationDTO.FirstName;
+                _user.Email = registrationDTO.Email;
+                //_user.Country = string.Empty;
+                //_user.Phone = string.Empty;
+                //_user.DateOfBirth = DateTime.UtcNow;
+                //_user.UpdateDate = DateTime.UtcNow;
+                //_user.Id = ;
+
+                //await _unitOfWork.Users.
 
                 // create jwt
                 var token = GenerateJWT(newUser);
