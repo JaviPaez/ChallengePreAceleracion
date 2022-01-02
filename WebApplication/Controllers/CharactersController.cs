@@ -117,9 +117,29 @@ namespace WebApplication.Controllers
 
         //Update
         [HttpPut]
-        public async Task<IActionResult> Put(Character character)
+        [Route("{id}")]
+        public async Task<IActionResult> Put(int id, CharacterDTO characterDTO)
         {
-            await _unitOfWork.Characters.UpdateAsync(character);
+            if (id != characterDTO.Id)
+            {
+                return BadRequest();
+            }
+
+            var character = await _unitOfWork.Characters.GetByIdAsync(id);
+            if (character == null)
+            {
+                return NotFound();
+            }
+
+            character.UpdateDate = DateTime.UtcNow;
+            character.Image = characterDTO.Image;
+            character.Name = characterDTO.Name;
+            character.Age = characterDTO.Age;
+            character.Weight = characterDTO.Weight; 
+            character.Story = characterDTO.Story;
+            character.Movies = characterDTO.Movies;
+
+
             await _unitOfWork.SaveAsync();
 
             return Ok(CharacterToDTO(character));

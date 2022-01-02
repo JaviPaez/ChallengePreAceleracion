@@ -7,7 +7,7 @@ using System;
 using System.Linq;
 
 namespace WebApplication.Controllers
-{
+{   
     public class UsersController : BaseController
     {
         public UsersController(IUnitOfWork unitOfWork) : base(unitOfWork)
@@ -20,10 +20,13 @@ namespace WebApplication.Controllers
         {
             var user = new User
             {
+                UpdateDate = DateTime.UtcNow,
                 FirstName = userDTO.FirstName,
                 LastName = userDTO.LastName,
                 Email = userDTO.Email,
-                UpdateDate = DateTime.UtcNow
+                Phone = userDTO.Phone,
+                DateOfBirth = userDTO.DateOfBirth,
+                Country = userDTO.Country               
             };
 
             await _unitOfWork.Users.InsertAsync(user);

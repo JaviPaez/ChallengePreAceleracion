@@ -20,6 +20,7 @@ namespace WebApplication.Controllers
     public class AccountsController : BaseController
     {
         private readonly UserManager<IdentityUser> _userManager;
+
         private readonly JwtConfig _jwtConfig;
 
         public AccountsController(
@@ -47,7 +48,7 @@ namespace WebApplication.Controllers
                     return BadRequest(new UserRegistrationResponseDTO
                     {
                         Success = false,
-                        Errors = new List<string> //doublecheck this
+                        Errors = new List<string>
                         {
                             "Email already in use"
                         }
@@ -74,19 +75,22 @@ namespace WebApplication.Controllers
                 }
 
                 // adding user to the db
-                var _user = new User();
-                _user.IdentityId = new Guid(newUser.Id);
-                _user.AddedDate = DateTime.UtcNow;
-                _user.LastName = registrationDTO.LastName;
-                _user.FirstName = registrationDTO.FirstName;
-                _user.Email = registrationDTO.Email;
-                //_user.Country = string.Empty;
-                //_user.Phone = string.Empty;
-                //_user.DateOfBirth = DateTime.UtcNow;
-                //_user.UpdateDate = DateTime.UtcNow;
-                //_user.Id = ;
+                var _user = new User
+                {
+                    IdentityId = new Guid(newUser.Id),
+                    AddedDate = DateTime.UtcNow,
+                    LastName = registrationDTO.LastName,
+                    FirstName = registrationDTO.FirstName,
+                    Email = registrationDTO.Email
+                    //Country = string.Empty;
+                    //Phone = string.Empty;
+                    //DateOfBirth = DateTime.UtcNow;
+                    //UpdateDate = DateTime.UtcNow;   
+                };
 
-                //await _unitOfWork.Users.
+
+                await _unitOfWork.Users.InsertAsync(_user);
+                await _unitOfWork.SaveAsync();
 
                 // create jwt
                 var token = GenerateJWT(newUser);
@@ -103,7 +107,67 @@ namespace WebApplication.Controllers
                 return BadRequest(new UserRegistrationResponseDTO
                 {
                     Success = false,
-                    Errors = new List<string> //doublecheck this
+                    Errors = new List<string>
+                    {
+                        "Invalid payload"
+                    }
+                });
+            }
+        }
+
+        //Login action
+        [HttpPost]
+        [Route("Login")]
+        public async Task<IActionResult> Login([FromBody] UserLoginRequestDTO loginDTO)
+        {
+            if (ModelState.IsValid)
+            {
+                // 1.- check if email exists
+                var userExists = await _userManager.FindByEmailAsync(loginDTO.Email);
+
+                if (userExists == null)
+                {
+                    return BadRequest(new UserLoginResponseDTO
+                    {
+                        Success = false,
+                        Errors = new List<string>
+                        {
+                            "Invalid authentication request"
+                        }
+                    });
+                }
+
+                // 2.- check if password is correct
+                var isCorrect = await _userManager.CheckPasswordAsync(userExists, loginDTO.Password);
+
+                if (isCorrect)
+                {
+                    // generate a jwt
+                    var token = GenerateJWT(userExists);
+                    return Ok(new UserLoginResponseDTO
+                    {
+                        Success = true,
+                        Token = token
+                    });
+                }
+                else // incorrect password
+                {
+                    return BadRequest(new UserLoginResponseDTO
+                    {
+                        Success = false,
+                        Errors = new List<string>
+                        {
+                            "Invalid authentication request"
+                        }
+                    });
+                }
+            }
+            else // invalid object
+            {
+                return BadRequest(new UserLoginResponseDTO
+                {
+                    Success = false,
+                    Errors = new List<string>
                     {
                         "Invalid payload"
                     }

@@ -1,10 +1,8 @@
-﻿using System.Collections.Generic;
-using Entities.Models;
+﻿using Entities.Models;
 
 namespace Services.IRepository
 {
     public interface IGenresRepository : IGenericRepository<Genre>
-    {
-        
+    {        
     }
 }
