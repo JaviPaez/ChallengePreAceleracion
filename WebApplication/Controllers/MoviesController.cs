@@ -98,8 +98,8 @@ namespace WebApplication.Controllers
 
         //Get all ordered by date ascending or descending
         [HttpGet]
-        [Route("order/{ASC}")]
-        public async Task<IActionResult> GetOrderByDate(string ASC)
+        [Route("order")]
+        public async Task<IActionResult> GetOrderByDate(bool ASC)
         {
             var movies = await _unitOfWork.Movies.GetMovieOrderByDate(ASC);
 

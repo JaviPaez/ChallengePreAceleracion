@@ -28,12 +28,12 @@ namespace Services.Repository
             return movie;
         }
 
-        public async Task<List<Movie>> GetMovieOrderByDate(string order)
+        public async Task<List<Movie>> GetMovieOrderByDate(bool ascending)
         {
-            if (order == "ASC")
+            if (ascending)
                 return await dbSet.OrderBy(movie => movie.CreationDate).Include(x => x.Genre).Include(x => x.Characters).ToListAsync();
 
-            else return await dbSet.OrderByDescending(movie => movie.CreationDate).Include(x => x.Genre).Include(x => x.Characters).ToListAsync();
+            else return await dbSet.OrderByDescending(movie => movie.CreationDate).Include(x => x.Genre).Include(x => x.Characters).ToListAsync();            
         }
     }
 }
