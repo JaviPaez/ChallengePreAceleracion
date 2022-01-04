@@ -5,9 +5,12 @@ using System.Threading.Tasks;
 using Entities.DTO.Incoming;
 using System;
 using System.Linq;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace WebApplication.Controllers
 {
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class GenresController : BaseController
     {
         public GenresController(IUnitOfWork unitOfWork) : base(unitOfWork)
