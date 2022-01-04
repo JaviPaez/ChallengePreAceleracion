@@ -28,9 +28,9 @@ namespace Services.Repository
             return movie;
         }
 
-        public async Task<List<Movie>> GetMovieOrderByDate(bool Ascending)
+        public async Task<List<Movie>> GetMovieOrderByDate(string order)
         {
-            if (Ascending == true)
+            if (order == "ASC")
                 return await dbSet.OrderBy(movie => movie.CreationDate).Include(x => x.Genre).Include(x => x.Characters).ToListAsync();
 
             else return await dbSet.OrderByDescending(movie => movie.CreationDate).Include(x => x.Genre).Include(x => x.Characters).ToListAsync();

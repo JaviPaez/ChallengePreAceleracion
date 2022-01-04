@@ -5,9 +5,12 @@ using System.Threading.Tasks;
 using Entities.DTO.Incoming;
 using System;
 using System.Linq;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace WebApplication.Controllers
 {
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class CharactersController : BaseController
     {
         public CharactersController(IUnitOfWork unitOfWork) : base(unitOfWork)

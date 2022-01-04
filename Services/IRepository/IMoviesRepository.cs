@@ -8,6 +8,6 @@ namespace Services.IRepository
     {
         Task<Movie> GetMovieByName(string name);
         Task<List<Movie>> GetMovieByGenre(string genre);
-        Task<List<Movie>> GetMovieOrderByDate(bool Ascending);
+        Task<List<Movie>> GetMovieOrderByDate(string order);
     }
 }

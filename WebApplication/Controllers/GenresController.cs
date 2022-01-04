@@ -2,6 +2,9 @@
 using Entities.Models;
 using Services.IConfiguration;
 using System.Threading.Tasks;
+using Entities.DTO.Incoming;
+using System;
+using System.Linq;
 
 namespace WebApplication.Controllers
 {
@@ -13,51 +16,97 @@ namespace WebApplication.Controllers
 
         //Create
         [HttpPost]
-        public async Task<IActionResult> Post(Genre genre)
+        public async Task<IActionResult> Post(GenreDTO genreDTO)
         {
+            var genre = new Genre
+            {
+                Name = genreDTO.Name,
+                Image = genreDTO.Image,             
+                UpdateDate = DateTime.UtcNow
+            };
+
             await _unitOfWork.Genres.InsertAsync(genre);
             await _unitOfWork.SaveAsync();
 
-            return CreatedAtRoute("GetGenre", genre.Id, genre);
+            return CreatedAtAction(
+                nameof(GetGenreById),
+                new { id = genre.Id },
+                GenreToDTO(genre));
         }
 
-        //Read all
+        //Get all
         [HttpGet]
-        [Route("GetGenres")]
         public async Task<IActionResult> GetGenres()
         {
             var genres = await _unitOfWork.Genres.GetAllAsync();
-            return Ok(genres);
+
+            var genresDTO = genres
+                .Select(genre => GenreToDTO(genre))
+                .ToList();
+
+            return Ok(genresDTO);
         }
 
-        //Read by Id
+        //Get by Id
         [HttpGet]
-        [Route("GetGenre", Name = "GetGenre")]
+        [Route("{id}")]
         public async Task<IActionResult> GetGenreById(int id)
         {
             var genre = await _unitOfWork.Genres.GetByIdAsync(id);
-            return Ok(genre);
+
+            if (genre == null)
+            {
+                return NotFound();
+            }
+            return Ok(GenreToDTO(genre));
         }        
 
         //Update
         [HttpPut]
-        public async Task<IActionResult> Put(Genre genre)
+        [Route("{id}")]
+        public async Task<IActionResult> Put(int id, GenreDTO genreDTO)
         {
-            await _unitOfWork.Genres.UpdateAsync(genre);
+            if (id != genreDTO.Id)
+            {
+                return BadRequest();
+            }
+
+            var genre = await _unitOfWork.Genres.GetByIdAsync(id);
+            if (genre == null)
+            {
+                return NotFound();
+            }
+
+            genre.UpdateDate = DateTime.UtcNow;
+            genre.Image = genreDTO.Image;
+            genre.Name = genreDTO.Name;          
+
+
             await _unitOfWork.SaveAsync();
 
-            return Ok(genre);
+            return Ok(GenreToDTO(genre));
         }
 
         //Delete
         [HttpDelete]
-        [Route("DeleteGenre")]
+        [Route("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            await _unitOfWork.Genres.DeleteAsync(id);
-            await _unitOfWork.SaveAsync();
+            bool removes = await _unitOfWork.Genres.DeleteAsync(id);
 
-            return Ok();
+            if (!removes)
+            {
+                return NotFound();
+            }
+            await _unitOfWork.SaveAsync();
+            return NoContent();
         }
+
+        private static GenreDTO GenreToDTO(Genre genre) => new()
+        {
+            Id = genre.Id,
+            Image = genre.Image,
+            Name = genre.Name            
+        };
     }
 }
